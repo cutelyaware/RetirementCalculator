@@ -1,18 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_horizontal">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
     <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:typeface="monospace"
             android:id="@+id/button" android:checked="false"/>
     <EditText android:layout_width="94dp" android:layout_height="wrap_content" android:inputType="number"
-              android:ems="10" android:id="@+id/value"/>
-    <SeekBar
+            android:ems="10" android:id="@+id/value"/>
+    <com.superliminal.android.retirement.RealSlider
+            android:id="@+id/slider"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/slider"
-            android:indeterminate="false" />
+            android:layout_gravity="center"/>
 </LinearLayout>
