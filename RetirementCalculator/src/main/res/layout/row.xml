@@ -7,11 +7,15 @@
             android:layout_height="fill_parent"
             android:typeface="monospace"
             android:id="@+id/button" android:checked="false"/>
-    <EditText android:layout_width="94dp" android:layout_height="wrap_content" android:inputType="number"
-            android:ems="10" android:id="@+id/value"/>
+    <EditText
+            android:id="@+id/value"
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:focusable="false"/>
     <com.superliminal.android.retirement.RealSlider
             android:id="@+id/slider"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" android:layout_margin="4dip"/>
 </LinearLayout>

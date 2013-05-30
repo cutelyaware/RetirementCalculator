@@ -71,7 +71,7 @@ public class RealSlider extends SeekBar {
                         false, 0, SLIDER_RANGE, ival,
                         isLogScale, minReal, maxReal
                 );
-                curReal = dval;
+                setRealValue(dval);
                 // Notify all listeners.
                 fireChangeEvent();
             }
@@ -120,7 +120,7 @@ public class RealSlider extends SeekBar {
     }
 
     public void setRealMinimum(double newmin) {
-        setAll(newmin, maxReal, getRealValue(), isLogScale);
+        setAll(newmin, maxReal, curReal, isLogScale);
     }
 
     public double getRealMaximum() {
@@ -128,7 +128,7 @@ public class RealSlider extends SeekBar {
     }
 
     public void setRealMaximum(double newmax) {
-        setAll(minReal, newmax, getRealValue(), isLogScale);
+        setAll(minReal, newmax, curReal, isLogScale);
     }
 
     public double getRealValue() {
@@ -137,19 +137,21 @@ public class RealSlider extends SeekBar {
 
     public void setRealValue(double newcur) {
         // update the model
-        curReal = newcur;
-        // update the view
-        int icur = rangeValue(newcur);
-        super.setProgress(icur);
+        newcur = Math.max(newcur, minReal);
+        newcur = Math.min(newcur, maxReal);
+        setAll(minReal, maxReal, newcur, isLogScale);
     }
 
     public void setAll(double newmin, double newmax, double newcur, boolean log) {
         minReal = newmin;
         maxReal = newmax;
+        curReal = newcur;
         isLogScale = log;
+        // update the view
         int imax = rangeValue(newmax);
-        this.setMax(imax);
-        setRealValue(newcur);
+        super.setMax(imax);
+        int icur = rangeValue(newcur);
+        super.setProgress(icur);
     }
 
     //
