@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" >
+        Retirement Calculator
+    </string>
+    <string name="action_settings" >
+        Settings
+    </string>
 
-    <string name="app_name" >RetirementCalculator
+    <string name="instructions" >
+        This tool is a \"what-if\" machine for exploring various retirement possibilities. The value in the selected row is affected by the other 3. By default the "Expenses" variable is selected. This means that you can see how much you can draw each month depending on the values you enter for the other three.
     </string>
-    <string name="action_settings" >Settings
-    </string>
-    <string name="hello_world" >Hello Android Studio!
-    </string>
-
 </resources>

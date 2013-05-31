@@ -71,8 +71,8 @@ public class Calculator extends Activity {
         for(ViewGroup v : rows) {
             RealSlider s = ((RealSlider) v.findViewById(R.id.slider));
             double cur_val = s.getRealValue();
-            s.setRealValue(cur_val * 0.000001);
-            s.setRealValue(cur_val);
+            s.setRealValue((s.getRealMaximum() + s.getRealMinimum()) /2); // First set a guaranteed good value.
+            s.setRealValue(cur_val); // Then set the desired one.
         }
     }
 
@@ -116,7 +116,14 @@ public class Calculator extends Activity {
                             selected = r;
                         b.setChecked(this_row); // Checks this row's button and unchecks all others.
                         s.setEnabled(!this_row); // Disallow adjustments to selected row since this is the row we are solving for.
-                        r.setBackgroundColor(this_row ? Color.GRAY : Color.TRANSPARENT);
+                        if(this_row) {
+                            r.setBackgroundResource(R.drawable.output_bg);
+//                            b.setTextColor(Color.WHITE);
+                        }
+                        else {
+                            r.setBackgroundColor(Color.TRANSPARENT);
+//                            b.setTextColor(Color.BLACK);
+                        }
                     }
                 } catch(Throwable t) {
                     t.printStackTrace();

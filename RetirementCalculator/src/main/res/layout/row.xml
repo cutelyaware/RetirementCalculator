@@ -17,5 +17,5 @@
             android:id="@+id/slider"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" android:layout_margin="4dip"/>
+            android:layout_gravity="center" android:layout_margin="6dip"/>
 </LinearLayout>
