@@ -8,6 +8,6 @@
     </string>
 
     <string name="instructions" >
-        This tool is a \"what-if\" machine for exploring various retirement possibilities. The value in the selected row is affected by the other 3. By default the "Expenses" variable is selected. This means that you can see how much you can draw each month depending on the values you enter for the other three.
+        Get the big-picture about your retirement. The value in the selected row is affected by the other 3. By default the "Expenses" variable is selected. This means that you can see how much you can draw each month depending on the values you enter for the other three. Select other rows to find out how much to save, what interest rates you will need, and how long you will be able to live on your savings.
     </string>
 </resources>

@@ -35,10 +35,10 @@ public class Calculator extends Activity {
         final ViewGroup death = (ViewGroup) findViewById(R.id.death);
         initRow(wealth, WEALTH, 10000, 5000000, 100000);
         initRow(interest, INTEREST, .1, 15, 5);
-        initRow(expenses, EXPENSES, 100 * 12, 20000 * 12, 500 * 12); // Slider thinks in years but displays in months.
+        View.OnClickListener default_listener = initRow(expenses, EXPENSES, 100 * 12, 20000 * 12, 500 * 12); // Slider thinks in years but displays in months.
         initRow(death, DEATH_IN, 1, 80, 25);
         selected = expenses;
-        selected.findViewById(R.id.button).callOnClick(); // Selects an initial "solve for" variable.
+        default_listener.onClick(selected); // Selects the initial "solve for" variable.
         for (final ViewGroup r : rows) {
             final RealSlider s = (RealSlider) r.findViewById(R.id.slider);
             // Add a listener that updates the dependent slider while user drags another.
@@ -76,7 +76,7 @@ public class Calculator extends Activity {
         }
     }
 
-    private void initRow(final ViewGroup row, final String name, double min, double max, double cur) {
+    private View.OnClickListener initRow(final ViewGroup row, final String name, double min, double max, double cur) {
         ((RadioButton) row.findViewById(R.id.button)).setText(name);
         rows.add(row);
         final RealSlider rs = (RealSlider) row.findViewById(R.id.slider);
@@ -104,7 +104,7 @@ public class Calculator extends Activity {
             }
         });
         final RadioButton my_butt = (RadioButton) row.findViewById(R.id.button);
-        my_butt.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener button_listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try{
@@ -130,7 +130,9 @@ public class Calculator extends Activity {
                 }
                 gooseSliders();
             }
-        });
+        };
+        my_butt.setOnClickListener(button_listener);
+        return button_listener;
     } // end initRow()
 
     private static double solveForWealth(double I, double D, double E) {
