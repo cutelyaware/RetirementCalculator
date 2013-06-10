@@ -3,6 +3,7 @@ package com.superliminal.android.retirement;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -39,10 +40,10 @@ public class Calculator extends Activity {
         initRow(death, DEATH_IN, 1, 80, 25);
         selected = expenses;
         default_listener.onClick(selected); // Selects the initial "solve for" variable.
-        for (final ViewGroup r : rows) {
-            final RealSlider s = (RealSlider) r.findViewById(R.id.slider);
+        for (final ViewGroup row : rows) {
+            final RealSlider slider = (RealSlider) row.findViewById(R.id.slider);
             // Add a listener that updates the dependent slider while user drags another.
-            s.addListener(new RealSlider.ChangeListener() {
+            slider.addListener(new RealSlider.ChangeListener() {
                 @Override
                 public void onChange(double newValue) {
                     double
@@ -62,6 +63,20 @@ public class Calculator extends Activity {
                         selected_slider.setRealValue(D = solveForDeath(W, I, E));
                 }
             });
+            // Even though I disable the selected row's slider, users still try to use it.
+            // This touch listener only shows it while the user is moving another slider,
+            // otherwise it makes it invisible.
+            slider.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    RealSlider selected_slider = (RealSlider) selected.findViewById(R.id.slider);
+                    if(event.getAction() == MotionEvent.ACTION_DOWN)
+                        selected_slider.setVisibility(View.VISIBLE);
+                    else if (event.getAction() == MotionEvent.ACTION_UP)
+                        selected_slider.setVisibility(View.INVISIBLE);
+                    return false;
+                }
+            });
         }
         gooseSliders(); // To make sure they start with possible values.
     } // end onCreate()
@@ -69,7 +84,7 @@ public class Calculator extends Activity {
     private void gooseSliders() {
         // Goose all sliders to get them to push their initial values into the text fields.
         for(ViewGroup v : rows) {
-            RealSlider s = ((RealSlider) v.findViewById(R.id.slider));
+            RealSlider s = (RealSlider) v.findViewById(R.id.slider);
             double cur_val = s.getRealValue();
             s.setRealValue((s.getRealMaximum() + s.getRealMinimum()) /2); // First set a guaranteed good value.
             s.setRealValue(cur_val); // Then set the desired one.
@@ -108,20 +123,21 @@ public class Calculator extends Activity {
             @Override
             public void onClick(View view) {
                 try{
-                    for (ViewGroup r : rows) {
-                        RadioButton b = (RadioButton) r.findViewById(R.id.button);
-                        RealSlider s = (RealSlider) r.findViewById(R.id.slider);
-                        boolean this_row = b.equals(my_butt);
+                    for (ViewGroup row : rows) {
+                        RadioButton button = (RadioButton) row.findViewById(R.id.button);
+                        RealSlider slider = (RealSlider) row.findViewById(R.id.slider);
+                        boolean this_row = button.equals(my_butt);
                         if (this_row)
-                            selected = r;
-                        b.setChecked(this_row); // Checks this row's button and unchecks all others.
-                        s.setEnabled(!this_row); // Disallow adjustments to selected row since this is the row we are solving for.
+                            selected = row;
+                        button.setChecked(this_row); // Checks this row's button and unchecks all others.
+                        slider.setEnabled(!this_row); // Disallow adjustments to selected row since this is the row we are solving for.
+                        slider.setVisibility(this_row ? View.INVISIBLE : View.VISIBLE);
                         if(this_row) {
-                            r.setBackgroundResource(R.drawable.output_bg);
+                            row.setBackgroundResource(R.drawable.output_bg); // Decorates the selected row.
 //                            b.setTextColor(Color.WHITE);
                         }
                         else {
-                            r.setBackgroundColor(Color.TRANSPARENT);
+                            row.setBackgroundColor(Color.TRANSPARENT); // Hide selection decoration.
 //                            b.setTextColor(Color.BLACK);
                         }
                     }
