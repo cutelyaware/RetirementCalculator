@@ -3,6 +3,8 @@ package com.superliminal.android.retirement;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -211,4 +213,13 @@ public class Calculator extends Activity {
                 x >= b ? b : x;
     }
 
+    // Prevents app being finished when users exit via back button much like via the home button.
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

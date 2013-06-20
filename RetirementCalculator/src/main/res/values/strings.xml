@@ -6,8 +6,7 @@
     <string name="action_settings" >
         Settings
     </string>
-
     <string name="instructions" >
-        Get the big-picture about your retirement. The value in the selected row is affected by the other 3. By default the "Expenses" variable is selected. This means that you can see how much you can draw each month depending on the values you enter for the other three. Select other rows to find out how much to save, what interest rates you will need, and how long you will be able to live on your savings.
+        \"Wealth\" is your net worth at retirement. \"Interest\" is what you expect that money to earn. \"Expenses\" is how much of your savings you will spend each month, and \"Death in\" is how long your money will last. Select a row of interest. The value in the selected row is affected by the other 3 sliders.
     </string>
 </resources>
