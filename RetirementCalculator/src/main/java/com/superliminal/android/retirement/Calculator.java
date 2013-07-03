@@ -3,7 +3,6 @@ package com.superliminal.android.retirement;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +39,7 @@ public class Calculator extends Activity {
         initRow(interest, INTEREST, .1, 15, 5);
         View.OnClickListener default_listener = initRow(expenses, EXPENSES, 100 * 12, 20000 * 12, 500 * 12); // Slider thinks in years but displays in months.
         initRow(death, DEATH_IN, 1, 80, 25);
-        selected = expenses;
+        selected = expenses; // Default selected row.
         default_listener.onClick(selected); // Selects the initial "solve for" variable.
         for (final ViewGroup row : rows) {
             final RealSlider slider = (RealSlider) row.findViewById(R.id.slider);
@@ -49,20 +48,20 @@ public class Calculator extends Activity {
                 @Override
                 public void onChange(double newValue) {
                     double
-                            W = ((RealSlider) rows.get(0).findViewById(R.id.slider)).getRealValue(),
-                            I = ((RealSlider) rows.get(1).findViewById(R.id.slider)).getRealValue(),
-                            E = ((RealSlider) rows.get(2).findViewById(R.id.slider)).getRealValue(),
-                            D = ((RealSlider) rows.get(3).findViewById(R.id.slider)).getRealValue();
+                            W = ((RealSlider) wealth.findViewById(R.id.slider)).getRealValue(),
+                            I = ((RealSlider) interest.findViewById(R.id.slider)).getRealValue(),
+                            E = ((RealSlider) expenses.findViewById(R.id.slider)).getRealValue(),
+                            D = ((RealSlider) death.findViewById(R.id.slider)).getRealValue();
                     // Adjust the selected row due to changes to this slider.
                     RealSlider selected_slider = ((RealSlider) selected.findViewById(R.id.slider));
                     if (selected.equals(wealth))
-                        selected_slider.setRealValue(W = solveForWealth(I, D, E));
+                        selected_slider.setRealValue(solveForWealth(I, D, E));
                     else if (selected.equals(interest))
-                        selected_slider.setRealValue(I = solveForInterest(W, D, E));
+                        selected_slider.setRealValue(solveForInterest(W, D, E));
                     else if (selected.equals(expenses))
-                        selected_slider.setRealValue(E = solveForExpenses(W, I, D));
+                        selected_slider.setRealValue(solveForExpenses(W, I, D));
                     else if (selected.equals(death))
-                        selected_slider.setRealValue(D = solveForDeath(W, I, E));
+                        selected_slider.setRealValue(solveForDeath(W, I, E));
                 }
             });
             // Even though I disable the selected row's slider, users still try to use it.
@@ -208,10 +207,10 @@ public class Calculator extends Activity {
         return Math.log(x);
     }
 
-    private static double clamp(double x, double a, double b) {
-        return x <= a ? a :
-                x >= b ? b : x;
-    }
+//    private static double clamp(double x, double a, double b) {
+//        return x <= a ? a :
+//                x >= b ? b : x;
+//    }
 
     // Prevents app being finished when users exit via back button much like via the home button.
     @Override
