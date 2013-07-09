@@ -93,7 +93,8 @@ public class Calculator extends Activity {
     }
 
     private View.OnClickListener initRow(final ViewGroup row, final String name, double min, double max, double cur) {
-        ((RadioButton) row.findViewById(R.id.button)).setText(name);
+        final RadioButton my_butt = (RadioButton) row.findViewById(R.id.button);
+        my_butt.setText(name);
         rows.add(row);
         final RealSlider rs = (RealSlider) row.findViewById(R.id.slider);
         rs.setAll(min, max, cur, true);
@@ -119,7 +120,6 @@ public class Calculator extends Activity {
                 }
             }
         });
-        final RadioButton my_butt = (RadioButton) row.findViewById(R.id.button);
         View.OnClickListener button_listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,11 +135,9 @@ public class Calculator extends Activity {
                         slider.setVisibility(this_row ? View.INVISIBLE : View.VISIBLE);
                         if(this_row) {
                             row.setBackgroundResource(R.drawable.output_bg); // Decorates the selected row.
-//                            b.setTextColor(Color.WHITE);
                         }
                         else {
                             row.setBackgroundColor(Color.TRANSPARENT); // Hide selection decoration.
-//                            b.setTextColor(Color.BLACK);
                         }
                     }
                 } catch(Throwable t) {
@@ -151,6 +149,34 @@ public class Calculator extends Activity {
         my_butt.setOnClickListener(button_listener);
         return button_listener;
     } // end initRow()
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putDouble(WEALTH  , ((RealSlider) rows.get(0).findViewById(R.id.slider)).getRealValue());
+        outState.putDouble(INTEREST, ((RealSlider) rows.get(1).findViewById(R.id.slider)).getRealValue());
+        outState.putDouble(EXPENSES, ((RealSlider) rows.get(2).findViewById(R.id.slider)).getRealValue());
+        outState.putDouble(DEATH_IN, ((RealSlider) rows.get(3).findViewById(R.id.slider)).getRealValue());
+        outState.putInt("selected", rows.indexOf(selected));
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore slider positions.
+        ((RealSlider) rows.get(0).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(WEALTH));
+        ((RealSlider) rows.get(1).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(INTEREST));
+        ((RealSlider) rows.get(2).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(EXPENSES));
+        ((RealSlider) rows.get(3).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(DEATH_IN));
+        // Restore radio button labels. Shouldn't be needed here because onCreate sets it.
+        ((RadioButton)rows.get(0).findViewById(R.id.button)).setText(WEALTH);
+        ((RadioButton)rows.get(1).findViewById(R.id.button)).setText(INTEREST);
+        ((RadioButton)rows.get(2).findViewById(R.id.button)).setText(EXPENSES);
+        ((RadioButton)rows.get(3).findViewById(R.id.button)).setText(DEATH_IN);
+        selected = rows.get(savedInstanceState.getInt("selected"));
+        selected.findViewById(R.id.button).performClick(); // Restore row selection.
+        gooseSliders(); // To make sure they start with possible values.
+    }
 
     private static double solveForWealth(double I, double D, double E) {
         if (I == 0.) {
