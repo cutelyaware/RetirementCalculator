@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -35,10 +36,10 @@ public class Calculator extends Activity {
         final ViewGroup interest = (ViewGroup) findViewById(R.id.interest);
         final ViewGroup expenses = (ViewGroup) findViewById(R.id.expenses);
         final ViewGroup death = (ViewGroup) findViewById(R.id.death);
-        initRow(wealth, WEALTH, 10000, 5000000, 100000);
-        initRow(interest, INTEREST, .1, 15, 5);
-        View.OnClickListener default_listener = initRow(expenses, EXPENSES, 100 * 12, 20000 * 12, 500 * 12); // Slider thinks in years but displays in months.
-        initRow(death, DEATH_IN, 1, 80, 25);
+        initRow(wealth, WEALTH, getString(R.string.wealth_description),  10000, 5000000, 100000);
+        initRow(interest, INTEREST, getString(R.string.interest_description), .1, 15, 5);
+        View.OnClickListener default_listener = initRow(expenses, EXPENSES, getString(R.string.expenses_description), 100 * 12, 20000 * 12, 500 * 12); // Slider thinks in years but displays in months.
+        initRow(death, DEATH_IN, getString(R.string.death_description), 1, 80, 25);
         selected = expenses; // Default selected row.
         default_listener.onClick(selected); // Selects the initial "solve for" variable.
         for (final ViewGroup row : rows) {
@@ -92,9 +93,10 @@ public class Calculator extends Activity {
         }
     }
 
-    private View.OnClickListener initRow(final ViewGroup row, final String name, double min, double max, double cur) {
+    private View.OnClickListener initRow(final ViewGroup row, final String name, final String description, double min, double max, double cur) {
         final RadioButton my_butt = (RadioButton) row.findViewById(R.id.button);
         my_butt.setText(name);
+        ((TextView) findViewById(R.id.row_description)).setText(description);
         rows.add(row);
         final RealSlider rs = (RealSlider) row.findViewById(R.id.slider);
         rs.setAll(min, max, cur, true);
@@ -139,6 +141,7 @@ public class Calculator extends Activity {
                         else {
                             row.setBackgroundColor(Color.TRANSPARENT); // Hide selection decoration.
                         }
+                        ((TextView) findViewById(R.id.row_description)).setText(description);
                     }
                 } catch(Throwable t) {
                     t.printStackTrace();

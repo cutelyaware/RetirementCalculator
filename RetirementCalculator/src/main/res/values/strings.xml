@@ -7,6 +7,18 @@
         Settings
     </string>
     <string name="instructions" >
-        \"Wealth\" is your net worth at retirement. \"Interest\" is what you expect that money to earn. \"Expenses\" is how much of your savings you will spend each month, and \"Death in\" is how long your money will last. Select a row of interest. The value in the selected row is affected by the other 3 sliders.
+          Select a row of interest. The value in the selected row is affected by the other 3 sliders.
+    </string>
+    <string name="wealth_description" >
+        \"Wealth\" is your net worth at retirement.
+    </string>
+    <string name="interest_description" >
+        \"Interest\" is what you expect your savings to earn.
+    </string>
+    <string name="expenses_description" >
+        \"Expenses\" is how much of your savings you expect to spend each month.
+    </string>
+    <string name="death_description" >
+        \"Death in\" is how long you expect your savings to last.
     </string>
 </resources>

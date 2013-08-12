@@ -1,21 +1,22 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content" >
     <LinearLayout
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_margin="4dip" >
-
-    <TextView
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="4dip" >
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/instructions"/>
-
-    <include layout="@layout/row" android:id="@+id/wealth" />
-    <include layout="@layout/row" android:id="@+id/interest" />
-    <include layout="@layout/row" android:id="@+id/expenses" />
-    <include layout="@layout/row" android:id="@+id/death" />
+        <include layout="@layout/row" android:id="@+id/wealth" />
+        <include layout="@layout/row" android:id="@+id/interest" />
+        <include layout="@layout/row" android:id="@+id/expenses" />
+        <include layout="@layout/row" android:id="@+id/death" />
+        <TextView
+            android:id="@+id/row_description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
 </LinearLayout>
 </ScrollView>
