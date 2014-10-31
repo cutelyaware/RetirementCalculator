@@ -21,10 +21,10 @@ import java.util.List;
  * @author Melinda Green
  */
 public class Calculator extends Activity {
-    private final static String WEALTH = "Wealth  ";
+    private final static String WEALTH   = "Wealth  ";
     private final static String INTEREST = "Interest";
     private final static String EXPENSES = "Expenses";
-    private final static String DEATH_IN = "Death in";
+    private final static String DEATH_IN = "Length  ";
     private List<ViewGroup> rows = new ArrayList<ViewGroup>();
     private ViewGroup selected;
 

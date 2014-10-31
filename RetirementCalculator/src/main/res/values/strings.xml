@@ -19,6 +19,6 @@
         \"Expenses\" is how much of your savings you expect to spend each month.
     </string>
     <string name="death_description" >
-        \"Death in\" is how long you expect your savings to last.
+        \"Length\" is how long you expect your savings to last.
     </string>
 </resources>
