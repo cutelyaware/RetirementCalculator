@@ -7,7 +7,7 @@
         Settings
     </string>
     <string name="instructions" >
-          Select a row of interest. The value in the selected row is affected by the other 3 sliders.
+          Select a row of interest. The value in the selected row is calculated from the other three sliders.
     </string>
     <string name="wealth_description" >
         \"Wealth\" is your net worth at retirement.
@@ -18,7 +18,7 @@
     <string name="expenses_description" >
         \"Expenses\" is how much of your savings you expect to spend each month.
     </string>
-    <string name="death_description" >
+    <string name="length_description" >
         \"Length\" is how long you expect your savings to last.
     </string>
 </resources>

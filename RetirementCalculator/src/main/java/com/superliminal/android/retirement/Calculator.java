@@ -24,7 +24,7 @@ public class Calculator extends Activity {
     private final static String WEALTH   = "Wealth  ";
     private final static String INTEREST = "Interest";
     private final static String EXPENSES = "Expenses";
-    private final static String DEATH_IN = "Length  ";
+    private final static String LENGTH = "Length  ";
     private List<ViewGroup> rows = new ArrayList<ViewGroup>();
     private ViewGroup selected;
 
@@ -35,11 +35,11 @@ public class Calculator extends Activity {
         final ViewGroup wealth = (ViewGroup) findViewById(R.id.wealth);
         final ViewGroup interest = (ViewGroup) findViewById(R.id.interest);
         final ViewGroup expenses = (ViewGroup) findViewById(R.id.expenses);
-        final ViewGroup death = (ViewGroup) findViewById(R.id.death);
+        final ViewGroup length= (ViewGroup) findViewById(R.id.length);
         initRow(wealth, WEALTH, getString(R.string.wealth_description),  10000, 5000000, 100000);
         initRow(interest, INTEREST, getString(R.string.interest_description), .1, 15, 5);
         View.OnClickListener default_listener = initRow(expenses, EXPENSES, getString(R.string.expenses_description), 100 * 12, 20000 * 12, 500 * 12); // Slider thinks in years but displays in months.
-        initRow(death, DEATH_IN, getString(R.string.death_description), 1, 80, 25);
+        initRow(length, LENGTH, getString(R.string.length_description), 1, 80, 25);
         selected = expenses; // Default selected row.
         default_listener.onClick(selected); // Selects the initial "solve for" variable.
         for (final ViewGroup row : rows) {
@@ -52,7 +52,7 @@ public class Calculator extends Activity {
                             W = ((RealSlider) wealth.findViewById(R.id.slider)).getRealValue(),
                             I = ((RealSlider) interest.findViewById(R.id.slider)).getRealValue(),
                             E = ((RealSlider) expenses.findViewById(R.id.slider)).getRealValue(),
-                            D = ((RealSlider) death.findViewById(R.id.slider)).getRealValue();
+                            D = ((RealSlider) length.findViewById(R.id.slider)).getRealValue();
                     // Adjust the selected row due to changes to this slider.
                     RealSlider selected_slider = ((RealSlider) selected.findViewById(R.id.slider));
                     if (selected.equals(wealth))
@@ -61,8 +61,8 @@ public class Calculator extends Activity {
                         selected_slider.setRealValue(solveForInterest(W, D, E));
                     else if (selected.equals(expenses))
                         selected_slider.setRealValue(solveForExpenses(W, I, D));
-                    else if (selected.equals(death))
-                        selected_slider.setRealValue(solveForDeath(W, I, E));
+                    else if (selected.equals(length))
+                        selected_slider.setRealValue(solveForLength(W, I, E));
                 }
             });
             // Even though I disable the selected row's slider, users still try to use it.
@@ -107,12 +107,12 @@ public class Calculator extends Activity {
                 try {
                     EditText text = ((EditText) row.findViewById(R.id.value));
                     if (WEALTH.equals(name))
-                        text.setText("$" + Math.round(newValue));
+                        text.setText("$" + Math.round(newValue/1000)*1000);
                     else if (INTEREST.equals(name))
                         text.setText("" + Double.parseDouble(new DecimalFormat("#.#").format(newValue)) + "%");
                     else if (EXPENSES.equals(name))
-                        text.setText("$" + Math.round(newValue / 12));
-                    else if (DEATH_IN.equals(name))
+                        text.setText("$" + (Math.round(newValue / 12 /50) * 50));
+                    else if (LENGTH.equals(name))
                         text.setText("" + Double.parseDouble(new DecimalFormat("#.#").format(newValue)) + " years");
                     // Erase any bogus values in the selected row.
                     if(row.equals(selected) && (rs.getRealValue() == rs.getRealMinimum() || rs.getRealValue() == rs.getRealMaximum()))
@@ -159,7 +159,7 @@ public class Calculator extends Activity {
         outState.putDouble(WEALTH  , ((RealSlider) rows.get(0).findViewById(R.id.slider)).getRealValue());
         outState.putDouble(INTEREST, ((RealSlider) rows.get(1).findViewById(R.id.slider)).getRealValue());
         outState.putDouble(EXPENSES, ((RealSlider) rows.get(2).findViewById(R.id.slider)).getRealValue());
-        outState.putDouble(DEATH_IN, ((RealSlider) rows.get(3).findViewById(R.id.slider)).getRealValue());
+        outState.putDouble(LENGTH, ((RealSlider) rows.get(3).findViewById(R.id.slider)).getRealValue());
         outState.putInt("selected", rows.indexOf(selected));
     }
 
@@ -170,12 +170,12 @@ public class Calculator extends Activity {
         ((RealSlider) rows.get(0).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(WEALTH));
         ((RealSlider) rows.get(1).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(INTEREST));
         ((RealSlider) rows.get(2).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(EXPENSES));
-        ((RealSlider) rows.get(3).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(DEATH_IN));
+        ((RealSlider) rows.get(3).findViewById(R.id.slider)).setRealValue(savedInstanceState.getDouble(LENGTH));
         // Restore radio button labels. Shouldn't be needed here because onCreate sets it.
         ((RadioButton)rows.get(0).findViewById(R.id.button)).setText(WEALTH);
         ((RadioButton)rows.get(1).findViewById(R.id.button)).setText(INTEREST);
         ((RadioButton)rows.get(2).findViewById(R.id.button)).setText(EXPENSES);
-        ((RadioButton)rows.get(3).findViewById(R.id.button)).setText(DEATH_IN);
+        ((RadioButton)rows.get(3).findViewById(R.id.button)).setText(LENGTH);
         selected = rows.get(savedInstanceState.getInt("selected"));
         selected.findViewById(R.id.button).performClick(); // Restore row selection.
         gooseSliders(); // To make sure they start with possible values.
@@ -201,7 +201,7 @@ public class Calculator extends Activity {
         return (W * I / 100) / (1 - Math.exp(-D * I / 100));
     }
 
-    private static double solveForDeath(double W, double I, double E) {
+    private static double solveForLength(double W, double I, double E) {
         if (I == 0.) {
             // Avoid 0 divided by 0: when x is small,
             // log(1 - x) is approximately -x,
